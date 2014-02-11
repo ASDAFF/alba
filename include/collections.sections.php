@@ -1,5 +1,6 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();?>
 <!-- Toggle Menu -->
+<?prent($arResult);?>
 <section class="toggle_menu">
 	<div class="or toggle_menu__top">
 		<a href="#" class="toggle_link" data-show=".toggle_menu_list">Осень-Зима 13/14</a>
