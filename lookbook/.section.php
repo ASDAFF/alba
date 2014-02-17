@@ -1,0 +1,6 @@
+<?
+$sSectionName = "Lookbook";
+$arDirProperties = Array(
+
+);
+?>

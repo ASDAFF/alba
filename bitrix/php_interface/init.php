@@ -1,4 +1,9 @@
 <?
+define('DEFAULT_PAGE_SIZE', 10);
+define('ACTIONS_IBLOCK_ID,', 5);
+define('DISCOUNT_IBLOCK_ID,', 10);
+define('NEWS_IBLOCK_ID,', 1);
+
 /**
  * Проверяет является ли страница главной на сайте
  */
