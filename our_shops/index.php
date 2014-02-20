@@ -2,20 +2,27 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Наши Салоны");
 ?><!-- ... -->
+
+<?$APPLICATION->IncludeComponent(
+    "alba:shops.list",
+    "",
+    Array(
+        "IBLOCK_TYPE" => "",
+        "IBLOCK_ID" => "",
+        "CACHE_TYPE" => "A",
+        "CACHE_TIME" => "3600",
+        "CACHE_NOTES" => ""
+    )
+);?>
+
 <?$APPLICATION->IncludeComponent("bitrix:map.google.view", ".default", array(
 	"INIT_MAP_TYPE" => "ROADMAP",
 	"MAP_DATA" => serialize(
         array(
-            'google_lat' => 54.70803636999584,
-            'google_lon' => 20.582714080810547,
+            'google_lat' => 56.009657,
+            'google_lon' => 37.945661,
             'google_scale' => 16,
-            'PLACEMARKS' => array(
-                array(
-                    'TEXT' => "ООО\"1С-Битрикс\", офис,  Московский проспект, 261.",
-                    'LON' => 20.582714080810547,
-                    'LAT' => 54.70803636999584
-                ),
-            ),
+            'PLACEMARKS' => $arResult["MARKS"]
         )
     ),
 	"MAP_WIDTH" => "600",
