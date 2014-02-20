@@ -1,0 +1,6 @@
+<?
+$sSectionName = "women";
+$arDirProperties = Array(
+
+);
+?>

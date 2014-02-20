@@ -1,6 +1,24 @@
 <?
 $arUrlRewrite = array(
 	array(
+		"CONDITION"	=>	"#^/partner/([^/]+)/($|index\\.php|\\?.*)#",
+		"RULE"	=>	"ELEMENT_CODE=$1",
+		"ID"	=>	"",
+		"PATH"	=>	"/partner/index.php",
+	),
+    array(
+        "CONDITION"	=>	"#^/collections/([0-9a-zA-Z_-]+)/([0-9a-zA-Z_-]+)/?.*#",
+        "RULE"	=>	"SECTION_CODE=\$1&ELEMENT_CODE=\$2",
+        "ID"	=>	"",
+        "PATH"	=>	"/collections/detail.php",
+    ),
+    array(
+        "CONDITION"	=>	"#^/collections/([0-9a-zA-Z_-]+)/?.*#",
+        "RULE"	=>	"SECTION_CODE=\$1",
+        "ID"	=>	"",
+        "PATH"	=>	"/collections/index.php",
+    ),
+	array(
 		"CONDITION"	=>	"#^/events/([0-9a-zA-Z_-]+)/([0-9a-zA-Z_-]+)/?.*#",
 		"RULE"	=>	"TYPE=\$1&ELEMENT_CODE=\$2",
 		"ID"	=>	"",

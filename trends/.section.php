@@ -1,0 +1,6 @@
+<?
+$sSectionName = "Тренды";
+$arDirProperties = Array(
+
+);
+?>

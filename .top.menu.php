@@ -1,0 +1,60 @@
+<?
+$aMenuLinks = Array(
+	Array(
+		"LookBook", 
+		"/lookbook/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Коллекции", 
+		"/collections/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"О компании", 
+		"/about_us/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"События", 
+		"/events/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Наши Салоны", 
+		"/our_shops/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Партнеры", 
+		"/partner/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Тренды", 
+		"/trends/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Пресса", 
+		"/press/", 
+		Array(), 
+		Array(), 
+		"" 
+	)
+);
+?>

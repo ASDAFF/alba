@@ -1,15 +1,17 @@
 <?
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
     die();
+
 /*Подключение модуля информационных блоков*/
 if (!CModule::IncludeModule("iblock"))
     return;
 
-if (!$arParams["IBLOCK_ID"]) {$arParams["IBLOCK_ID"] = 32; }
+if (!$arParams["IBLOCK_ID"]) { $arParams["IBLOCK_ID"] = 32; }
 if (!$arParams["SECTION_NAME"]) { $arParams["SECTION_NAME"] = 'man'; }
 
 $obCache = new CPHPCache;
-$CACHE_ID = "COLLECTIONS.LIST" . $arParams["IBLOCK_ID"] . implode('-', $arParams["ID"]) . $arParams["SECTION_NAME"] . $_GET["COLLECTION_CODE"];
+$CACHE_ID = "COLLECTIONS.LIST" . $arParams["IBLOCK_ID"] . implode('-', $arParams["ID"]);
+
 if($obCache->InitCache($arParams["CACHE_TIME"], $CACHE_ID, "/")) {
     $cache = $obCache->GetVars();
     $arResult = $cache["arResult"];
@@ -21,42 +23,41 @@ else {
         false, 
         array(
             "IBLOCK_ID" => $arParams["IBLOCK_ID"], 
-            "CODE" => $arParams["SECTION_NAME"], 
+            "CODE" => array($arParams["SECTION_NAME"], $_GET["COLLECTION_CODE"]), 
             "ACTIVE" => "Y"
             ), 
         false, 
-        array("ID", "CODE")
+        array("ID")
         );
     while ($section = $rsSections->Fetch()) {
-        $menuSections[$section["CODE"]] = $section["ID"];
+        $menuSections[$section["CODE"]] => $section["ID"];
     }
     
-    $mainSection = array_shift($menuSections);
     $rsSections = CIBlockSection::GetList(
         array("SORT" => "ASC"), 
         array(
             "IBLOCK_ID" => $arParams["IBLOCK_ID"], 
-            "SECTION_ID" =>  $mainSection, 
+            "SECTION_ID" => $mainSection["ID"], 
             "ACTIVE" => "Y"
             ), 
         false, 
-        array("ID", "SECTION_PAGE_URL", "NAME")
+        array("ID", "SECTION_PAGE_URL")
         );
     while ($section = $rsSections->GetNext()) {
         $arResult["MENU"]["SECTIONS"][$section["ID"]] = $section;
     }
+
     $rsItems = CIBlockElement::GetList(
         array("SORT" => "ASC"), 
         array(
             "IBLOCK_ID" => $arParams["IBLOCK_ID"], 
-            "SECTION_CODE" => ($_GET["COLLECTION_CODE"]) ? $_GET["COLLECTION_CODE"] : $arParams["SECTION_NAME"],
-            "INCLUDE_SUBSECTIONS" => "Y"
+            "IBLOCK_SECTION_ID" => ($menuSections[$_GET["COLLECTION_CODE"]]) ? $menuSections[$_GET["COLLECTION_CODE"]] : $mainSection["ID"],
             ), 
         false, 
         false, 
         array("PREVIEW_PICTURE", "DETAIL_PAGE_URL", "CODE")
         );
-    while ($item = $rsItems->GetNext()) {
+    while ($item = $rsItems->Fetch()) {
         $arResult["ITEMS"][$item["ID"]] = array(
             "PREVIEW_PICTURE" => CFile::GetPath($item["PREVIEW_PICTURE"]),
             "DETAIL_PAGE_URL" => $item["DETAIL_PAGE_URL"],

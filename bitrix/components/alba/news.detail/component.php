@@ -31,7 +31,7 @@ if($obCache->InitCache($arParams["CACHE_TIME"], $CACHE_ID, "/")) {
 else {
     $obCache->StartDataCache();
 
-    $filter = array("IBLOCK_ID" => $arParams["IBLOCK_ID"], "ACTIVE" => "Y", "CODE" => $_GET["CODE"]);
+    $filter = array("IBLOCK_ID" => $arParams["IBLOCK_ID"], "ACTIVE" => "Y", "CODE" => $_GET["ELEMENT_CODE"]);
 
     $rsItems = CIBlockElement::GetList(
         array("DATE_CREATE" => "DESC", "SORT" => "ASC"),
