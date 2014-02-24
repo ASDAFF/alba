@@ -1,0 +1,1 @@
+<a href="/events/actions/" class="banner sales f_right">Autumn sale! 30%</a>

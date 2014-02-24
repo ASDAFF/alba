@@ -1,11 +1,11 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();?>
-<? require $_SERVER["DOCUMENT_ROOT"] . '/include/news.sections.php';?>
+<? // require $_SERVER["DOCUMENT_ROOT"] . '/include/news.sections.php';?>
 <!-- Content -->
 <section class="gradient_box">
     <div class="container">
         <ul class="news_list">
             <?foreach ($arResult["ITEMS"] as $id => $item) :?>
-            <li class="news_list__item">
+            <li class="news_list__item" style="min-height: 400px;">
                 <figure class="news_img">
                     <span class="spacer"></span>
                     <img src="<?=$item["PREVIEW_PICTURE"]?>" alt="">

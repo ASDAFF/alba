@@ -21,10 +21,10 @@
 	</head>
 	<body><? $APPLICATION->ShowPanel(); ?><div id="scrollbody">
 		<!--markup header-->
-		<header>
+		<header role="banner">
 			<div class="container clearfix t_align_c">
 				<!--language settings-->
-				<div class="f_left">
+				<div class="f_left d_sm_none d_xs_none">
 					<ul class="ls clearfix">
 						<li class="active"><a href="/">РУС</a></li>
 						<li><a href="/">ENG</a></li>
@@ -32,17 +32,18 @@
 					</ul>
 				</div>
 				<!--logo-->
-				<a class="logo" href="/">
+				<a class="logo f_left d_sm_block d_xs_block" href="/">
 					<img src="/images/logo.jpg" alt="">
 				</a>
-				<div class="f_right">
+				<div class="f_right f_sm_left f_xs_left">
 					<ul class="h_contact_list t_align_l">
-<?$APPLICATION->IncludeFile(
+						<?$APPLICATION->IncludeFile(
 						$APPLICATION->GetTemplatePath("/new_includes/header_contacts.php"),
 						Array(),
 						Array("MODE"=>"html")
 					);?>
 					</ul>
+					<a href="http://shop.the-alba.com/" class="shop_btn f_sm_right f_xs_right">интернет-магазин</a>
 				</div>
 			</div>
 		</header>
@@ -70,8 +71,12 @@ false
 <?if ($APPLICATION->GetCurPage() == "/") : ?>			
 <div class="banners_wrap">
 				<div class="container clearfix">
-					<a href="#" class="banner f_right">Интернет-Магазин</a>
-					<a href="#" class="banner sales f_right">Autumn sale! 30%</a>
+					<a href="http://shop.the-alba.com/" class="banner f_right">Интернет-Магазин</a>
+                    <?$APPLICATION->IncludeFile(
+                        $APPLICATION->GetTemplatePath("/new_includes/header_link_actions.php"),
+                        Array(),
+                        Array("MODE"=>"html")
+                    );?>
 				</div>
 			</div>
 <?endif;?>

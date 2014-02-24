@@ -2,6 +2,8 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
     die();
 
+
+
 /*Подключение модуля информационных блоков*/
 if (!CModule::IncludeModule("iblock"))
     return;
@@ -9,9 +11,10 @@ if (!CModule::IncludeModule("iblock"))
 if (!$arParams["IBLOCK_ID"]) {$arParams["IBLOCK_ID"] = 35; }
 
 $obCache = new CPHPCache;
-$CACHE_ID = "TRENDS.LIST" . $arParams["IBLOCK_ID"] . implode('-', $arParams["ID"]);
+$CACHE_ID = "TRENDS.LIST" . $arParams["IBLOCK_ID"] . implode('-', $arParams["ID"] . "PAGE" . $_GET["PAGE"]);
 
-if($obCache->InitCache($arParams["CACHE_TIME"], $CACHE_ID, "/")) {
+if (false) {
+//if($obCache->InitCache($arParams["CACHE_TIME"], $CACHE_ID, "/")) {
     $cache = $obCache->GetVars();
     $arResult = $cache["arResult"];
 }
@@ -19,21 +22,26 @@ else {
     $obCache->StartDataCache();
 
     $filter = array("IBLOCK_ID" => $arParams["IBLOCK_ID"], "ACTIVE" => "Y");
-
+    $filter = array("IBLOCK_ID" => $arParams["IBLOCK_ID"], "ACTIVE" => "Y");
+    if (isset($_GET["YEAR"])) {
+        $now = date("Y");
+        $filter["><DATE_CREATE"] = array("01.01." .$_GET["YEAR"], "31.12." . $_GET["YEAR"]);
+    } else {
+        $filter[">=DATE_CREATE"] = "01.01." . date('Y');
+    }
 
     $rsItems = CIBlockElement::GetList(
         array("SORT" => "ASC"),
         $filter,
         false,
-        false,
-        array("IBLOCK_ID", "ID", "CODE", "DETAIL_PAGE_URL", "DETAIL_TEXT", "NAME", "DETAIL_PICTURE")
+        array("nPageSize" => DEFAULT_PAGE_SIZE_TREND, "iNumPage" => ($_GET["PAGE"]) ? $_GET["PAGE"] : 1),
+        array("IBLOCK_ID", "ID", "CODE", "DETAIL_PAGE_URL", "DETAIL_TEXT", "NAME", "DETAIL_PICTURE", "DATE_CREATE")
         );
-
-    $arResult["ALL_ITEMS"] = $rsItems->SelectedRowsCount();
 
     $index = 0;
     while ($item = $rsItems->GetNext()) {
         $item["DETAIL_PICTURE"] = CFile::GetPath($item["DETAIL_PICTURE"]);
+        $item["DATE_CREATE"] = FormatDate("j F Y", MakeTimeStamp($item["DATE_CREATE"]), time());
         $arResult["ITEMS"][] = $item;
     }
     if (!$arResult["CURRENT"]) {
@@ -43,6 +51,26 @@ else {
     /**
     Pagination
     */
+    $nextItemsValue = CIBlockElement::GetList(
+        array("SORT" => "ASC"),
+        $filter,
+        false,
+        false,
+        array("ID")
+    )->SelectedRowsCount();
+    if (!isset($_GET["PAGE"]) || $_GET["PAGE"] == 1) {
+        $arResult["PAGINATION"]["PREV"] = false;
+        if ($nextItemsValue > DEFAULT_PAGE_SIZE_TREND*$_GET["PAGE"]) {
+            $arResult["PAGINATION"]["NEXT"] = $APPLICATION->GetCurPageParam("PAGE=2", array("PAGE"));
+        }
+    } else {
+        if ($nextItemsValue > DEFAULT_PAGE_SIZE_TREND*$_GET["PAGE"]) {
+            $arResult["PAGINATION"]["NEXT"] = $APPLICATION->GetCurPageParam("PAGE=" . ($_GET["PAGE"] + 1), array("PAGE"));
+        }
+        $arResult["PAGINATION"]["PREV"] = $APPLICATION->GetCurPageParam("PAGE=" . ($_GET["PAGE"] - 1), array("PAGE"));
+    }
+
+
     $tmp1 = $arResult["ITEMS"];
     $tmp = array();
     foreach ($tmp1 as $k => $item) {
@@ -51,15 +79,6 @@ else {
         }
     }
     $arResult["ITEMS"] = array(0 => $tmp1, 1 => $tmp);
-
-    if ($currentPage === 0 || $currentPage) {
-        if ($arResult["ITEMS"][$currentPage+1]) {
-            $arResult["PAGINATION"]["NEXT_ITEM"] = $arResult["ITEMS"][$currentPage+1]["CODE"];
-        }
-        if ($arResult["ITEMS"][$currentPage-1]) {
-            $arResult["PAGINATION"]["PREV_ITEM"] = $arResult["ITEMS"][$currentPage-1]["CODE"];
-        }
-    }
 
     $obCache->EndDataCache(array("arResult" => $arResult));
 }

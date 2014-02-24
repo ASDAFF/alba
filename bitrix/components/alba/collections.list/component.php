@@ -6,10 +6,10 @@ if (!CModule::IncludeModule("iblock"))
     return;
 
 if (!$arParams["IBLOCK_ID"]) {$arParams["IBLOCK_ID"] = 32; }
-if (!$arParams["SECTION_NAME"]) { $arParams["SECTION_NAME"] = 'man'; }
+if (!$arParams["SECTION_NAME"]) { $arParams["SECTION_NAME"] = 'women'; }
 
 $obCache = new CPHPCache;
-$CACHE_ID = "COLLECTIONS.LIST" . $arParams["IBLOCK_ID"] . implode('-', $arParams["ID"]) . $arParams["SECTION_NAME"] . $_GET["COLLECTION_CODE"];
+$CACHE_ID = "COLLECTIONS.LIST" . $arParams["IBLOCK_ID"] . implode('-', $arParams["ID"]) . $arParams["SECTION_NAME"] . $_GET["COLLECTION_CODE"] . implode('-', $_GET);
 if($obCache->InitCache($arParams["CACHE_TIME"], $CACHE_ID, "/")) {
     $cache = $obCache->GetVars();
     $arResult = $cache["arResult"];
@@ -45,13 +45,16 @@ else {
     while ($section = $rsSections->GetNext()) {
         $arResult["MENU"]["SECTIONS"][$section["ID"]] = $section;
     }
+    $filter = array(
+        "IBLOCK_ID" => $arParams["IBLOCK_ID"],
+        "INCLUDE_SUBSECTIONS" => "Y"
+    );
+    if (!isset($_GET["SHOW"]) || $_GET["SHOW"] != "ALL") {
+        $filter["SECTION_CODE"] = ($_GET["COLLECTION_CODE"]) ? $_GET["COLLECTION_CODE"] : $arParams["SECTION_NAME"];
+    }
     $rsItems = CIBlockElement::GetList(
         array("SORT" => "ASC"), 
-        array(
-            "IBLOCK_ID" => $arParams["IBLOCK_ID"], 
-            "SECTION_CODE" => ($_GET["COLLECTION_CODE"]) ? $_GET["COLLECTION_CODE"] : $arParams["SECTION_NAME"],
-            "INCLUDE_SUBSECTIONS" => "Y"
-            ), 
+        $filter,
         false, 
         false, 
         array("PREVIEW_PICTURE", "DETAIL_PAGE_URL", "CODE")

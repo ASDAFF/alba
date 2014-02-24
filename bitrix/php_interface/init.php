@@ -1,8 +1,11 @@
 <?
+define("DEFAULT_PAGE_SIZE_TREND", 6);
 define('DEFAULT_PAGE_SIZE', 10);
 define('ACTIONS_IBLOCK_ID,', 5);
 define('DISCOUNT_IBLOCK_ID,', 10);
 define('NEWS_IBLOCK_ID,', 1);
+
+
 
 /**
  * Проверяет является ли страница главной на сайте
@@ -182,11 +185,11 @@ function CheckCity($CITY_ID)
 	if(CModule::IncludeModule("iblock"))
 	{
 		$rs = CIBlockElement::GetList(array(), array("IBLOCK_ID" => "6", "ID" => $CITY_ID));
-		
+
 		if($rs -> SelectedRowsCount())
 			return $CITY_ID;
 	}
-	
+
 	return false;
 }
 
@@ -427,4 +430,6 @@ function GenPassword($len = 10)
 
 SetCity();
 SetMarket();
+
+
 ?>

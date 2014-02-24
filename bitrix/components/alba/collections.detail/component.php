@@ -48,6 +48,7 @@ else {
         $arResult["MENU"]["SECTIONS"][$sec["ID"]] = $sec;
     }
 
+
     /**
      * Get collection items
      */

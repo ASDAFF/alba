@@ -1,6 +1,6 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();?>
 <!-- Content -->
-<section class="gradient_box m_top">
+<section class="gradient_box m_top" style="margin-top: 0;">
     <div class="container secondary">
         <div class="clearfix">
             <?foreach ($arResult["ITEMS"] as $kol => $items) : ?>
@@ -22,8 +22,12 @@
             <?endforeach;?>
         </div>
         <div class="clearfix pages_nav">
-            <a href="#" class="f_left prev_page">Позже</a>
-            <a href="#" class="f_right next_page">Раньше</a>
+            <?if ($arResult["PAGINATION"]["PREV"]) :?>
+                <a href="<?=$arResult["PAGINATION"]["PREV"]?>" class="f_left prev_page">Позже</a>
+            <?endif;?>
+            <?if ($arResult["PAGINATION"]["NEXT"]) : ?>
+                <a href="<?=$arResult["PAGINATION"]["NEXT"]?>" class="f_right next_page">Раньше</a>
+            <?endif;?>
         </div>
     </div>
 </section>

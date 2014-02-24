@@ -3,7 +3,9 @@
 <!-- Content -->
 <section class="gradient_box">
     <div class="container p_rel">
-        <a href="#" class="banner extra_banner d_xs_none">Смотреть всю коллекцию</a>
+        <?if (isset($_GET["COLLECTION_CODE"])) : ?>
+            <a href="<?=$APPLICATION->GetCurPageParam("SHOW=ALL");?>" class="banner extra_banner d_xs_none">Смотреть всю коллекцию</a>
+        <?endif;?>
         <h1 class="collection_title"><?=$arResult["SECTION"]["NAME"]?></h1>
         <ul class="collection_list">
             <li class="collection_row m_bottom_20">

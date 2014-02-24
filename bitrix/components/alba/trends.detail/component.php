@@ -26,7 +26,7 @@ else {
         $filter,
         false,
         false,
-        array("IBLOCK_ID", "ID", "CODE", "DETAIL_PAGE_URL", "DETAIL_TEXT", "NAME", "DETAIL_PICTURE")
+        array("IBLOCK_ID", "ID", "CODE", "DETAIL_PAGE_URL", "DETAIL_TEXT", "NAME", "DETAIL_PICTURE", "DATE_CREATE")
         );
 
     $arResult["ALL_ITEMS"] = $rsItems->SelectedRowsCount();
@@ -34,6 +34,7 @@ else {
     $index = 0;
     while ($item = $rsItems->GetNext()) {
         $item["DETAIL_PICTURE"] = CFile::GetPath($item["DETAIL_PICTURE"]);
+        $item["DATE_CREATE"] = FormatDate("j F Y", MakeTimeStamp($item["DATE_CREATE"]), time());
         $arResult["ITEMS"][] = $item;
         if (isset($_GET["ELEMENT_CODE"])) {
             if ($_GET["ELEMENT_CODE"] == $item["CODE"]) {
